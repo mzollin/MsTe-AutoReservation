@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoReservation.Dal.Entities
 {
+    [Table("Kunde", Schema = "dbo")]
     public class Kunde
     {
         [Key]

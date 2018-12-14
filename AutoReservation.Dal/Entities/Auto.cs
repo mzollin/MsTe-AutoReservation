@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoReservation.Dal.Entities
 {
+    [Table("Auto", Schema = "dbo")]
     public class Auto
     {
         [Key]
@@ -22,11 +23,25 @@ namespace AutoReservation.Dal.Entities
         [Column("AutoKlasse")]
         public int CarClass { get; set; }
 
-        // FIXME: use subclasses because that's why
-        public int BaseRate { get; set; }
-
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
+    }
+
+    public class StandardAuto : Auto
+    {
+
+    }
+
+    public class MittelklasseAuto : Auto
+    {
+
+    }
+
+    public class LuxusklasseAuto : Auto
+    {
+        [Required]
+        [Column("Basistarif")]
+        public int BaseRate { get; set; }
     }
 }
