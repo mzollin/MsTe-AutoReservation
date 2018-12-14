@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,6 +26,9 @@ namespace AutoReservation.Dal.Entities
         [Column("Geburtsdatum", TypeName = "DateTime2")]
         [MaxLength(7)]
         public DateTime Birthday { get; set; }
+
+        [InverseProperty("KundeId")]
+        public ICollection<Reservation> Reservations { get; set; }
 
 
         [Timestamp]
