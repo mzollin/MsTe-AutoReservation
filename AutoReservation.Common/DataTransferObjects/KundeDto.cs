@@ -19,6 +19,7 @@ namespace AutoReservation.Common.DataTransferObjects
         [DataMember]
         public byte[] RowVersion { get; set; }
 
+        public KundeDto() { } //default ctor for property injection
         public KundeDto(KundeDto customer)
         {
             Birthday = customer.Birthday;

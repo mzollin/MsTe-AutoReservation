@@ -13,12 +13,14 @@ namespace AutoReservation.Dal.Entities
 
 
         [Required]
-        [ForeignKey(nameof(Auto))]
         public int AutoId { get; set; }
+        [ForeignKey("AutoId")]
+        public virtual Auto Auto { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Kunde))]
         public int KundeId { get; set; }
+        [ForeignKey("KundeId")]
+        public virtual Kunde Kunde { get; set; }
 
         [Required]
         [Column("Von", TypeName = "DateTime2")]

@@ -20,6 +20,7 @@ namespace AutoReservation.Common.DataTransferObjects
         [DataMember]
         public byte[] RowVersion { get; set; }
 
+        public AutoDto() { } //default ctor for property injection
         public AutoDto(AutoDto car)
         {
             BaseRate = car.BaseRate;

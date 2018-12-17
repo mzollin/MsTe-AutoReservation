@@ -21,6 +21,7 @@ namespace AutoReservation.Common.DataTransferObjects
         [DataMember]
         public byte[] RowVersion { get; set; }
 
+        public ReservationDto() { } //default ctor for property injection
         public ReservationDto(ReservationDto reservation)
         {
             To = reservation.To;
