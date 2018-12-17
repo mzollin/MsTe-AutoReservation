@@ -26,13 +26,13 @@ namespace AutoReservation.Service.Wcf
         }
 
         #region Create
-        public void Create(AutoDto car)
+        public void CreateAuto(AutoDto car)
         {
             WriteActualMethod();
             _autoManager.Create(car.ConvertToEntity());
         }
 
-        public void Create(ReservationDto reservation)
+        public void CreateReservation(ReservationDto reservation)
         {
             WriteActualMethod();
 
@@ -58,7 +58,7 @@ namespace AutoReservation.Service.Wcf
             }
         }
 
-        public void Create(KundeDto customer)
+        public void CreateKunde(KundeDto customer)
         {
             WriteActualMethod();
 
@@ -78,7 +78,7 @@ namespace AutoReservation.Service.Wcf
         #endregion
 
         #region Read
-        public AutoDto ReadCar(int id)
+        public AutoDto ReadAuto(int id)
         {
             WriteActualMethod();
 
@@ -94,7 +94,7 @@ namespace AutoReservation.Service.Wcf
             return car.ConvertToDto();
         }
 
-        public IEnumerable<AutoDto> ReadAllCars()
+        public IEnumerable<AutoDto> ReadAllAutos()
         {
             WriteActualMethod();
             return _autoManager.ReadAll().ConvertToDtos();
@@ -116,13 +116,13 @@ namespace AutoReservation.Service.Wcf
             return reservation.ConvertToDto();
         }
 
-        public IEnumerable<ReservationDto> ReadAllReservations()
+        public IEnumerable<ReservationDto> ReadAllReservationen()
         {
             WriteActualMethod();
             return _reservationManager.ReadAll().ConvertToDtos();
         }
 
-        public KundeDto ReadCustomer(int id)
+        public KundeDto ReadKunde(int id)
         {
             WriteActualMethod();
 
@@ -138,7 +138,7 @@ namespace AutoReservation.Service.Wcf
             return customer.ConvertToDto();
         }
 
-        public IEnumerable<KundeDto> ReadAllCustomers()
+        public IEnumerable<KundeDto> ReadAllKunden()
         {
             WriteActualMethod();
             return _kundeManager.ReadAll().ConvertToDtos();
@@ -146,7 +146,7 @@ namespace AutoReservation.Service.Wcf
         #endregion
 
         #region Update
-        public void Update(AutoDto car)
+        public void UpdateAuto(AutoDto car)
         {
             WriteActualMethod();
 
@@ -164,7 +164,7 @@ namespace AutoReservation.Service.Wcf
             }
         }
 
-        public void Update(ReservationDto reservation)
+        public void UpdateReservation(ReservationDto reservation)
         {
             WriteActualMethod();
 
@@ -198,7 +198,7 @@ namespace AutoReservation.Service.Wcf
             }
         }
 
-        public void Update(KundeDto customer)
+        public void UpdateKunde(KundeDto customer)
         {
             WriteActualMethod();
 
@@ -218,7 +218,7 @@ namespace AutoReservation.Service.Wcf
         #endregion
 
         #region Delete
-        public void Delete(AutoDto car)
+        public void DeleteAuto(AutoDto car)
         {
             WriteActualMethod();
 
@@ -236,7 +236,7 @@ namespace AutoReservation.Service.Wcf
             }
         }
 
-        public void Delete(ReservationDto reservation)
+        public void DeleteReservation(ReservationDto reservation)
         {
             WriteActualMethod();
 
@@ -254,7 +254,7 @@ namespace AutoReservation.Service.Wcf
             }
         }
 
-        public void Delete(KundeDto customer)
+        public void DeleteKunde(KundeDto customer)
         {
             WriteActualMethod();
 
@@ -273,7 +273,7 @@ namespace AutoReservation.Service.Wcf
         }
         #endregion
 
-        public bool IsCarAvailable(int id)
+        public bool IsAutoAvailable(int id)
         {
             WriteActualMethod();
 
@@ -288,7 +288,7 @@ namespace AutoReservation.Service.Wcf
             return _reservationManager.ReadAllForGivenAuto(id).OrderBy(r => r.To).Last().To < DateTime.Now;
         }
 
-        public IEnumerable<AutoDto> GetAllAvailableCars()
+        public IEnumerable<AutoDto> GetAllAvailableAutos()
         {
             WriteActualMethod();
 

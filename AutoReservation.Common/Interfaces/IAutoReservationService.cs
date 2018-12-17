@@ -8,56 +8,64 @@ namespace AutoReservation.Common.Interfaces
     [ServiceContract]
     public interface IAutoReservationService
     {
+        #region Create
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        void Create(AutoDto car);
+        void CreateAuto(AutoDto car);
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        void Create(ReservationDto reservation);
+        void CreateReservation(ReservationDto reservation);
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        void Create(KundeDto customer);
+        void CreateKunde(KundeDto customer);
+        #endregion
 
+        #region Read
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        AutoDto ReadCar(int id);
+        AutoDto ReadAuto(int id);
         [OperationContract]
-        IEnumerable<AutoDto> ReadAllCars();
+        IEnumerable<AutoDto> ReadAllAutos();
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
         ReservationDto ReadReservation(int id);
         [OperationContract]
-        IEnumerable<ReservationDto> ReadAllReservations();
+        IEnumerable<ReservationDto> ReadAllReservationen();
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        KundeDto ReadCustomer(int id);
+        KundeDto ReadKunde(int id);
         [OperationContract]
-        IEnumerable<KundeDto> ReadAllCustomers();
+        IEnumerable<KundeDto> ReadAllKunden();
+        #endregion
+
+        #region Update
+        [OperationContract]
+        [FaultContract(typeof(AutoReservationFault))]
+        void UpdateAuto(AutoDto car);
+        [OperationContract]
+        [FaultContract(typeof(AutoReservationFault))]
+        void UpdateReservation(ReservationDto reservation);
+        [OperationContract]
+        [FaultContract(typeof(AutoReservationFault))]
+        void UpdateKunde(KundeDto customer);
+        #endregion
+
+        #region Delete
+        [OperationContract]
+        [FaultContract(typeof(AutoReservationFault))]
+        void DeleteAuto(AutoDto car);
+        [OperationContract]
+        [FaultContract(typeof(AutoReservationFault))]
+        void DeleteReservation(ReservationDto reservation);
+        [OperationContract]
+        [FaultContract(typeof(AutoReservationFault))]
+        void DeleteKunde(KundeDto customer);
+        #endregion
 
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        void Update(AutoDto car);
+        bool IsAutoAvailable(int id);
         [OperationContract]
-        [FaultContract(typeof(AutoReservationFault))]
-        void Update(ReservationDto reservation);
-        [OperationContract]
-        [FaultContract(typeof(AutoReservationFault))]
-        void Update(KundeDto customer);
-
-        [OperationContract]
-        [FaultContract(typeof(AutoReservationFault))]
-        void Delete(AutoDto car);
-        [OperationContract]
-        [FaultContract(typeof(AutoReservationFault))]
-        void Delete(ReservationDto reservation);
-        [OperationContract]
-        [FaultContract(typeof(AutoReservationFault))]
-        void Delete(KundeDto customer);
-
-        [OperationContract]
-        [FaultContract(typeof(AutoReservationFault))]
-        bool IsCarAvailable(int id);
-        [OperationContract]
-        IEnumerable<AutoDto> GetAllAvailableCars();
+        IEnumerable<AutoDto> GetAllAvailableAutos();
     }
 }
