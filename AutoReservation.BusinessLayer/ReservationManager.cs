@@ -84,7 +84,7 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
-        private void CheckDateRange(Reservation reservation)
+        private static void CheckDateRange(Reservation reservation)
         {
             if (reservation.From > reservation.To)
             {

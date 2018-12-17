@@ -73,7 +73,7 @@ namespace AutoReservation.BusinessLayer
                 }
             }
         }
-        private void CheckCustomerAge(Kunde customer)
+        private static void CheckCustomerAge(Kunde customer)
         {
             if (customer.Birthday > DateTime.Now.AddYears(-18))
             {
