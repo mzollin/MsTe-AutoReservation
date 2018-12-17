@@ -10,7 +10,7 @@ namespace AutoReservation.BusinessLayer
 {
     public class KundeManager : ManagerBase
     {
-        public IEnumerable<Kunde> ReadAll()
+        public IEnumerable<Kunde> GetAll()
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
@@ -18,7 +18,7 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
-        public Kunde Read(int id)
+        public Kunde GetById(int id)
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {

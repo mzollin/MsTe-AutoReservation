@@ -10,7 +10,7 @@ namespace AutoReservation.BusinessLayer
 {
     public class ReservationManager : ManagerBase
     {
-        public IEnumerable<Reservation> ReadAll()
+        public IEnumerable<Reservation> GetAll()
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
@@ -18,7 +18,7 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
-        public IEnumerable<Reservation> ReadAllForGivenAuto(int id)
+        public IEnumerable<Reservation> GetAllForGivenAuto(int id)
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
@@ -26,7 +26,7 @@ namespace AutoReservation.BusinessLayer
             }
         } 
 
-        public Reservation Read(int nr)
+        public Reservation GetById(int nr)
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
@@ -101,7 +101,7 @@ namespace AutoReservation.BusinessLayer
         private void CheckCarAvailability(Reservation reservation)
         {
             var car = reservation.Auto;
-            var relatedReservations = ReadAllForGivenAuto(car.Id).ToList();
+            var relatedReservations = GetAllForGivenAuto(car.Id).ToList();
 
             if (!relatedReservations.Any())
             {

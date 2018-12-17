@@ -82,7 +82,7 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
 
-            var car = _autoManager.Read(id);
+            var car = _autoManager.GetById(id);
             if (car == null)
             {
                 throw new FaultException<AutoReservationFault>(new AutoReservationFault
@@ -97,14 +97,14 @@ namespace AutoReservation.Service.Wcf
         public IEnumerable<AutoDto> ReadAllAutos()
         {
             WriteActualMethod();
-            return _autoManager.ReadAll().ConvertToDtos();
+            return _autoManager.GetAll().ConvertToDtos();
         }
 
         public ReservationDto ReadReservation(int id)
         {
             WriteActualMethod();
 
-            var reservation = _reservationManager.Read(id);
+            var reservation = _reservationManager.GetById(id);
             if (reservation == null)
             {
                 throw new FaultException<AutoReservationFault>(new AutoReservationFault
@@ -119,14 +119,14 @@ namespace AutoReservation.Service.Wcf
         public IEnumerable<ReservationDto> ReadAllReservationen()
         {
             WriteActualMethod();
-            return _reservationManager.ReadAll().ConvertToDtos();
+            return _reservationManager.GetAll().ConvertToDtos();
         }
 
         public KundeDto ReadKunde(int id)
         {
             WriteActualMethod();
 
-            var customer = _kundeManager.Read(id);
+            var customer = _kundeManager.GetById(id);
             if (customer == null)
             {
                 throw new FaultException<AutoReservationFault>(new AutoReservationFault
@@ -141,7 +141,7 @@ namespace AutoReservation.Service.Wcf
         public IEnumerable<KundeDto> ReadAllKunden()
         {
             WriteActualMethod();
-            return _kundeManager.ReadAll().ConvertToDtos();
+            return _kundeManager.GetAll().ConvertToDtos();
         }
         #endregion
 
@@ -277,7 +277,7 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
 
-            if (_autoManager.Read(id) == null)
+            if (_autoManager.GetById(id) == null)
             {
                 throw new FaultException<AutoReservationFault>(new AutoReservationFault
                 {
@@ -285,14 +285,14 @@ namespace AutoReservation.Service.Wcf
                 });
             }
 
-            return _reservationManager.ReadAllForGivenAuto(id).OrderBy(r => r.To).Last().To < DateTime.Now;
+            return _reservationManager.GetAllForGivenAuto(id).OrderBy(r => r.To).Last().To < DateTime.Now;
         }
 
         public IEnumerable<AutoDto> GetAllAvailableAutos()
         {
             WriteActualMethod();
 
-            return _reservationManager.ReadAll()
+            return _reservationManager.GetAll()
                                       .GroupBy(r => r.AutoId)
                                       .Select(e => e.OrderBy(r => r.To).Last())
                                       .Where(r => r.To < DateTime.Now)
