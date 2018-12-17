@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoReservation.Dal.Entities;
 using AutoReservation.TestEnvironment;
 using Xunit;
 
@@ -13,9 +14,9 @@ namespace AutoReservation.BusinessLayer.Testing
         public ReservationAvailabilityTest()
         {
             // Prepare reservation
-            Reservation reservation = Target.GetById(1);
-            reservation.Von = DateTime.Today;
-            reservation.Bis = DateTime.Today.AddDays(1);
+            Reservation reservation = Target.Read(1);
+            reservation.From = DateTime.Today;
+            reservation.To = DateTime.Today.AddDays(1);
             Target.Update(reservation);
         }
 
