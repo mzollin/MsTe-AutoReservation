@@ -36,6 +36,33 @@ namespace AutoReservation.Dal
                 .HasValue<StandardAuto>(2)
                 .HasValue<MittelklasseAuto>(1)
                 .HasValue<LuxusklasseAuto>(0);
+
+
+            modelBuilder.HasSequence<int>("AutoIds", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+
+            modelBuilder.Entity<Auto>()
+                .Property(a => a.Id)
+                .HasDefaultValueSql("NEXT VALUE FOR dbo.AutoIds");
+
+
+            modelBuilder.HasSequence<int>("KundeIds", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+
+            modelBuilder.Entity<Kunde>()
+                .Property(k => k.Id)
+                .HasDefaultValueSql("NEXT VALUE FOR dbo.KundeIds");
+
+
+            modelBuilder.HasSequence<int>("Reservationsnummern", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+
+            modelBuilder.Entity<Reservation>()
+                .Property(r => r.ReservationsNr)
+                .HasDefaultValueSql("NEXT VALUE FOR dbo.Reservationsnummern");
         }
     }
 }

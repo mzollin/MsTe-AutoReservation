@@ -35,5 +35,27 @@ namespace AutoReservation.Dal.Entities
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var reservation = obj as Reservation;
+            return reservation != null &&
+                   ReservationsNr == reservation.ReservationsNr &&
+                   AutoId == reservation.AutoId &&
+                   KundeId == reservation.KundeId &&
+                   From == reservation.From &&
+                   To == reservation.To;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 21937253;
+            hashCode = hashCode * -1521134295 + ReservationsNr.GetHashCode();
+            hashCode = hashCode * -1521134295 + AutoId.GetHashCode();
+            hashCode = hashCode * -1521134295 + KundeId.GetHashCode();
+            hashCode = hashCode * -1521134295 + From.GetHashCode();
+            hashCode = hashCode * -1521134295 + To.GetHashCode();
+            return hashCode;
+        }
     }
 }
