@@ -132,28 +132,28 @@ namespace AutoReservation.TestEnvironment
         private static List<Auto> Autos =>
             new List<Auto>
             {
-                new StandardAuto {Brand = "Fiat Punto", DailyRate = 50},
-                new MittelklasseAuto {Brand = "VW Golf", DailyRate = 120},
-                new LuxusklasseAuto {Brand = "Audi S6", DailyRate = 180, BaseRate = 50},
-                new StandardAuto {Brand = "Fiat 500", DailyRate = 75},
+                new StandardAuto {Id = 1, Brand = "Fiat Punto", DailyRate = 50},
+                new MittelklasseAuto {Id = 2, Brand = "VW Golf", DailyRate = 120},
+                new LuxusklasseAuto {Id = 3, Brand = "Audi S6", DailyRate = 180, BaseRate = 50},
+                new StandardAuto {Id = 4, Brand = "Fiat 500", DailyRate = 75},
             };
 
         private static List<Kunde> Kunden =>
             new List<Kunde>
             {
-                new Kunde {Surname = "Nass", FirstName = "Anna", Birthday = new DateTime(1981, 05, 05)},
-                new Kunde {Surname = "Beil", FirstName = "Timo", Birthday = new DateTime(1980, 09, 09)},
-                new Kunde {Surname = "Pfahl", FirstName = "Martha", Birthday = new DateTime(1990, 07, 03)},
-                new Kunde {Surname = "Zufall", FirstName = "Rainer", Birthday = new DateTime(1954, 11, 11)},
+                new Kunde {Id = 1, Surname = "Nass", FirstName = "Anna", Birthday = new DateTime(1981, 05, 05)},
+                new Kunde {Id = 2, Surname = "Beil", FirstName = "Timo", Birthday = new DateTime(1980, 09, 09)},
+                new Kunde {Id = 3, Surname = "Pfahl", FirstName = "Martha", Birthday = new DateTime(1990, 07, 03)},
+                new Kunde {Id = 4, Surname = "Zufall", FirstName = "Rainer", Birthday = new DateTime(1954, 11, 11)},
             };
 
         private static List<Reservation> Reservationen =>
             new List<Reservation>
             {
-                new Reservation {AutoId = 1, KundeId = 1, From = new DateTime(2020, 01, 10), To = new DateTime(2020, 01, 20)},
-                new Reservation {AutoId = 2, KundeId = 2, From = new DateTime(2020, 01, 10), To = new DateTime(2020, 01, 20)},
-                new Reservation {AutoId = 3, KundeId = 3, From = new DateTime(2020, 01, 10), To = new DateTime(2020, 01, 20)},
-                new Reservation {AutoId = 2, KundeId = 1, From = new DateTime(2020, 05, 19), To = new DateTime(2020, 06, 19)},
+                new Reservation {ReservationsNr = 1, AutoId = 1, KundeId = 1, From = new DateTime(2020, 01, 10), To = new DateTime(2020, 01, 20)},
+                new Reservation {ReservationsNr = 2, AutoId = 2, KundeId = 2, From = new DateTime(2020, 01, 10), To = new DateTime(2020, 01, 20)},
+                new Reservation {ReservationsNr = 3, AutoId = 3, KundeId = 3, From = new DateTime(2020, 01, 10), To = new DateTime(2020, 01, 20)},
+                new Reservation {ReservationsNr = 4, AutoId = 2, KundeId = 1, From = new DateTime(2020, 05, 19), To = new DateTime(2020, 06, 19)},
             };
 
         private static string GetTableName<T>(this DbContext context)

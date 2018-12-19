@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AutoReservation.Dal.Entities;
+using AutoReservation.TestEnvironment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoReservation.Dal.Entities;
-using AutoReservation.TestEnvironment;
 using Xunit;
 
 namespace AutoReservation.BusinessLayer.Testing

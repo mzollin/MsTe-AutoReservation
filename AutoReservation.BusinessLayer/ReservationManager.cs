@@ -4,6 +4,7 @@ using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AutoReservation.BusinessLayer
@@ -14,7 +15,9 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Reservationen.ToList();
+                return context.Reservationen.Include(r => r.Kunde)
+                                            .Include(r => r.Auto)
+                                            .ToList();
             }
         }
 
@@ -22,7 +25,10 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Reservationen.Where(r => r.AutoId == id).ToList();
+                return context.Reservationen.Where(r => r.Auto.Id == id)
+                                            .Include(r => r.Kunde)
+                                            .Include(r => r.Auto)
+                                            .ToList();
             }
         } 
 
@@ -30,7 +36,9 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Reservationen.FirstOrDefault(a => a.ReservationsNr == nr);
+                return context.Reservationen.Include(r => r.Kunde)
+                                            .Include(r => r.Auto)
+                                            .FirstOrDefault(a => a.ReservationsNr == nr);
             }
         }
 
@@ -91,7 +99,7 @@ namespace AutoReservation.BusinessLayer
                 throw new InvalidDateRangeException($"From-date: {reservation.From} must happen before to-date: {reservation.To}");
             }
 
-            var duration = reservation.To.Subtract(reservation.From).Hours;
+            var duration = reservation.To.Subtract(reservation.From).TotalHours;
             if (duration < 24)
             {
                 throw new InvalidDateRangeException($"Range must be at least 24 hours, but is only {duration} hours.");
@@ -110,6 +118,12 @@ namespace AutoReservation.BusinessLayer
             }
 
             var latestReservation = relatedReservations.OrderBy(r => r.To).Last();
+            if (latestReservation.ReservationsNr == reservation.ReservationsNr)
+            {
+                Console.WriteLine("Latest reservation is the one we're modifying, don't need to check further.");
+                return;
+            }
+
             if (latestReservation.To > reservation.From)
             {
                 throw new AutoUnavailableException(reservation.From, latestReservation.To);
