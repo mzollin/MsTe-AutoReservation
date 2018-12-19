@@ -81,7 +81,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Target.Create(res);
+            ReservationManager.CheckCarAvailability(res, Target);
         }
 
 
@@ -95,7 +95,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Target.Create(res);
+            ReservationManager.CheckCarAvailability(res, Target);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Target.Create(res);
+            ReservationManager.CheckCarAvailability(res, Target);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Action a = () => Target.Create(res);
+            Action a = () => ReservationManager.CheckCarAvailability(res, Target);
 
             Assert.Throws<AutoUnavailableException>(a);
         }
@@ -136,7 +136,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Action a = () => Target.Create(res);
+            Action a = () => ReservationManager.CheckCarAvailability(res, Target);
 
             Assert.Throws<AutoUnavailableException>(a);
         }
@@ -151,7 +151,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Action a = () => Target.Create(res);
+            Action a = () => ReservationManager.CheckCarAvailability(res, Target);
 
             Assert.Throws<AutoUnavailableException>(a);
         }
@@ -166,7 +166,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Action a = () => Target.Create(res);
+            Action a = () => ReservationManager.CheckCarAvailability(res, Target);
 
             Assert.Throws<AutoUnavailableException>(a);
         }
@@ -181,7 +181,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Auto = PreparedCar,
                 Kunde = PreparedKunde
             };
-            Action a = () => Target.Create(res);
+            Action a = () => ReservationManager.CheckCarAvailability(res, Target);
 
             Assert.Throws<AutoUnavailableException>(a);
         }
