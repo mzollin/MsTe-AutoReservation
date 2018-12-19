@@ -14,13 +14,32 @@ namespace AutoReservation.Dal.Entities
 
         [Required]
         public int AutoId { get; set; }
+
+        private Auto _auto;
         [ForeignKey("AutoId")]
-        public virtual Auto Auto { get; set; }
+        public virtual Auto Auto {
+            get { return this._auto; }
+            set
+            {
+                this._auto = value;
+                this.AutoId = value.Id;
+            }
+        }
 
         [Required]
         public int KundeId { get; set; }
+
+        private Kunde _kunde;
         [ForeignKey("KundeId")]
-        public virtual Kunde Kunde { get; set; }
+        public virtual Kunde Kunde
+        {
+            get { return this._kunde; }
+            set
+            {
+                this._kunde = value;
+                this.KundeId = value.Id;
+            }
+        }
 
         [Required]
         [Column("Von", TypeName = "DateTime2")]

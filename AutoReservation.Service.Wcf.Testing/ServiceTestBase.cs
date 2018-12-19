@@ -106,8 +106,8 @@ namespace AutoReservation.Service.Wcf.Testing
             var car = Target.ReadAuto(2);
             var customer = Target.ReadKunde(3);
             Target.CreateReservation(new ReservationDto { Car = car, Customer = customer,
-                                                          From = new DateTime(2020, 01, 10),
-                                                          To = new DateTime(2020, 01, 20) });
+                                                          From = new DateTime(2120, 01, 10),
+                                                          To = new DateTime(2120, 01, 20) });
             var after = Target.ReadAllReservationen().Count();
             Assert.Equal(after, before + 1);
         }

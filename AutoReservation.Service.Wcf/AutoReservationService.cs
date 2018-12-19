@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceModel;
-using AutoReservation.BusinessLayer;
+﻿using AutoReservation.BusinessLayer;
 using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.DataTransferObjects.Faults;
 using AutoReservation.Common.Interfaces;
 using AutoReservation.Dal.Entities;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.ServiceModel;
 
 namespace AutoReservation.Service.Wcf
 {
