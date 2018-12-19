@@ -21,12 +21,12 @@ namespace AutoReservation.BusinessLayer.Testing
                 Brand = "TestBrand",
                 DailyRate = 99
             };
-            var cars = Target.GetAll();
+            var cars = Target.GetAll().ToList();
 
             Target.Create(newCar);
 
             Assert.ProperSuperset(new HashSet<Auto>(cars), new HashSet<Auto>(Target.GetAll()));
-            var newCarFromDb = Target.GetById(cars.OrderBy(c => c.Id).Last().Id + 1);
+            var newCarFromDb = Target.GetAll().First(c => !cars.Any(_c => _c.Id == c.Id));
             Assert.NotNull(newCarFromDb);
             Assert.Equal(newCar.Brand, newCarFromDb.Brand);
             Assert.Equal(newCar.DailyRate, newCarFromDb.DailyRate);
