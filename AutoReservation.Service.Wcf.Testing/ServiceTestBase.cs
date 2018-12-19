@@ -150,19 +150,28 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void DeleteAutoTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var before = Target.ReadAllAutos().Count();
+            Target.DeleteAuto(Target.ReadAuto(1));
+            var after = Target.ReadAllAutos().Count();
+            Assert.Equal(after, before - 1);
         }
 
         [Fact]
         public void DeleteKundeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var before = Target.ReadAllKunden().Count();
+            Target.DeleteKunde(Target.ReadKunde(1));
+            var after = Target.ReadAllKunden().Count();
+            Assert.Equal(after, before - 1);
         }
 
         [Fact]
         public void DeleteReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var before = Target.ReadAllReservationen().Count();
+            Target.DeleteReservation(Target.ReadReservation(1));
+            var after = Target.ReadAllReservationen().Count();
+            Assert.Equal(after, before - 1);
         }
 
         #endregion
@@ -216,7 +225,24 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void InsertReservationWithInvalidDateRangeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var car = Target.ReadAuto(2);
+            var customer = Target.ReadKunde(3);
+            var reservation = new ReservationDto
+            {
+                Car = car,
+                Customer = customer,
+                From = new DateTime(2030, 01, 20),
+                To = new DateTime(2030, 01, 10)
+            };
+
+            try
+            {
+                Target.CreateReservation(reservation);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.RentalPeriodNotAllowed, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
