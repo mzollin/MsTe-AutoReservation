@@ -2,7 +2,6 @@
 using AutoReservation.Dal;
 using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -45,7 +44,7 @@ namespace AutoReservation.BusinessLayer
         public void Create(Reservation reservation)
         {
             CheckDateRange(reservation);
-            CheckCarAvailability(reservation);
+            CheckCarAvailability(reservation, this);
 
             using (AutoReservationContext context = new AutoReservationContext())
             {
@@ -58,7 +57,7 @@ namespace AutoReservation.BusinessLayer
         public void Update(Reservation reservation)
         {
             CheckDateRange(reservation);
-            CheckCarAvailability(reservation);
+            CheckCarAvailability(reservation, this);
 
             using (AutoReservationContext context = new AutoReservationContext())
             {
@@ -91,8 +90,9 @@ namespace AutoReservation.BusinessLayer
                 }
             }
         }
-
-        private static void CheckDateRange(Reservation reservation)
+        
+        //public for testing
+        public static void CheckDateRange(Reservation reservation)
         {
             if (reservation.From > reservation.To)
             {
@@ -106,27 +106,46 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
-        private void CheckCarAvailability(Reservation reservation)
+        //public for testing
+        public static void CheckCarAvailability(Reservation reservation, ReservationManager manager)
         {
             var car = reservation.Auto;
-            var relatedReservations = GetAllForGivenAuto(car.Id).ToList();
+            var relatedReservations = manager.GetAllForGivenAuto(car.Id).ToList();
 
             if (!relatedReservations.Any())
             {
-                Console.WriteLine($"No reservations for car {car.Id} found, don't need to check further.");
+                Debug.WriteLine($"No reservations for car {car.Id} found, no need to check further.");
                 return;
+            }
+
+            if (relatedReservations.Count == 1
+             && relatedReservations.First().ReservationsNr == reservation.ReservationsNr)
+            {
+                Debug.WriteLine("There's only one reservation and we modify it, no need to check further.");
+                return;
+            }
+
+            //remove object we are modifying from our collection
+            var resInList = relatedReservations.FirstOrDefault(r => r.ReservationsNr == reservation.ReservationsNr);
+            if (resInList != null)
+            {
+                relatedReservations.Remove(resInList);
             }
 
             var latestReservation = relatedReservations.OrderBy(r => r.To).Last();
-            if (latestReservation.ReservationsNr == reservation.ReservationsNr)
+            var firstReservation = relatedReservations.OrderBy(r => r.From).First();
+            if (latestReservation.To < reservation.From
+             || firstReservation.From > reservation.To)
             {
-                Console.WriteLine("Latest reservation is the one we're modifying, don't need to check further.");
+                Debug.WriteLine("Reserving outside the range of other reservations, no need to check for collisions.");
                 return;
             }
 
-            if (latestReservation.To > reservation.From)
+            if (relatedReservations.Any(r => r.From <= reservation.From && r.To > reservation.From)
+             || relatedReservations.Any(r => r.From >= reservation.From && r.To <= reservation.To)
+             || relatedReservations.Any(r => r.From < reservation.To && r.To >= reservation.To))
             {
-                throw new AutoUnavailableException(reservation.From, latestReservation.To);
+                throw new AutoUnavailableException(reservation.From, reservation.To);
             }
         }
     }
