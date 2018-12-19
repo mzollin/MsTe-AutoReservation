@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using AutoReservation.Common.DataTransferObjects.Faults;
+using System;
 
 namespace AutoReservation.Common.Interfaces
 {
@@ -64,8 +65,8 @@ namespace AutoReservation.Common.Interfaces
 
         [OperationContract]
         [FaultContract(typeof(AutoReservationFault))]
-        bool IsAutoAvailable(int id);
+        bool IsAutoAvailable(int id, DateTime from, DateTime to);
         [OperationContract]
-        IEnumerable<AutoDto> GetAllAvailableAutos();
+        IEnumerable<AutoDto> GetAllAvailableAutos(DateTime from, DateTime to);
     }
 }

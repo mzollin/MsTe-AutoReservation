@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.Interfaces;
 using AutoReservation.TestEnvironment;
 using Xunit;
@@ -37,7 +39,8 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetAutoByIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var car = Target.ReadAuto(1);
+            Assert.Equal(1, car.Id);
         }
 
         [Fact]
@@ -81,19 +84,32 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void InsertAutoTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var before = Target.ReadAllAutos().Count();
+            Target.CreateAuto(new AutoDto { Brand = "VW Passat", DailyRate = 150});
+            var after = Target.ReadAllAutos().Count();
+            Assert.Equal(after, before + 1);
         }
 
         [Fact]
         public void InsertKundeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var before = Target.ReadAllKunden().Count();
+            Target.CreateKunde(new KundeDto { Surname = "Wäsche", FirstName = "Andy", Birthday = new DateTime(1989, 01, 02) });
+            var after = Target.ReadAllKunden().Count();
+            Assert.Equal(after, before + 1);
         }
 
         [Fact]
         public void InsertReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var before = Target.ReadAllReservationen().Count();
+            var car = Target.ReadAuto(2);
+            var customer = Target.ReadKunde(3);
+            Target.CreateReservation(new ReservationDto { Car = car, Customer = customer,
+                                                          From = new DateTime(2020, 01, 10),
+                                                          To = new DateTime(2020, 01, 20) });
+            var after = Target.ReadAllReservationen().Count();
+            Assert.Equal(after, before + 1);
         }
 
         #endregion

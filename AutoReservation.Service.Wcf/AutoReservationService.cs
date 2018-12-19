@@ -273,11 +273,12 @@ namespace AutoReservation.Service.Wcf
         }
         #endregion
 
-        public bool IsAutoAvailable(int id)
+        public bool IsAutoAvailable(int id, DateTime from, DateTime to)
         {
             WriteActualMethod();
 
-            if (_autoManager.GetById(id) == null)
+            var car = _autoManager.GetById(id);
+            if (car == null)
             {
                 throw new FaultException<AutoReservationFault>(new AutoReservationFault
                 {
@@ -285,19 +286,23 @@ namespace AutoReservation.Service.Wcf
                 });
             }
 
-            return _reservationManager.GetAllForGivenAuto(id).OrderBy(r => r.To).Last().To < DateTime.Now;
+            return _reservationManager.IsCarAvailable(car, from, to);
         }
 
-        public IEnumerable<AutoDto> GetAllAvailableAutos()
+        public IEnumerable<AutoDto> GetAllAvailableAutos(DateTime from, DateTime to)
         {
             WriteActualMethod();
 
-            return _reservationManager.GetAll()
-                                      .GroupBy(r => r.AutoId)
-                                      .Select(e => e.OrderBy(r => r.To).Last())
-                                      .Where(r => r.To < DateTime.Now)
-                                      .Select(r => r.Auto)
-                                      .ConvertToDtos();
+            List<AutoDto> availableAutos = new List<AutoDto>();
+            foreach (var car in _autoManager.GetAll())
+            {
+                if(_reservationManager.IsCarAvailable(car, from, to))
+                {
+                    availableAutos.Add(car.ConvertToDto());
+                }
+            }
+
+            return availableAutos;
         }
 
         private static void WriteActualMethod()

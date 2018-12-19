@@ -2,6 +2,7 @@
 using AutoReservation.Dal;
 using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -106,15 +107,27 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
+        public bool IsCarAvailable(Auto car, DateTime from, DateTime to)
+        {
+            try
+            {
+                CheckCarAvailability(new Reservation { Auto = car, From = from, To = to }, this);
+            }
+            catch(AutoUnavailableException)
+            {
+                return false;
+            }
+            return true;
+        }
+
         //public for testing
         public static void CheckCarAvailability(Reservation reservation, ReservationManager manager)
         {
-            var car = reservation.Auto;
-            var relatedReservations = manager.GetAllForGivenAuto(car.Id).ToList();
+            var relatedReservations = manager.GetAllForGivenAuto(reservation.AutoId).ToList();
 
             if (!relatedReservations.Any())
             {
-                Debug.WriteLine($"No reservations for car {car.Id} found, no need to check further.");
+                Debug.WriteLine($"No reservations for car {reservation.AutoId} found, no need to check further.");
                 return;
             }
 
