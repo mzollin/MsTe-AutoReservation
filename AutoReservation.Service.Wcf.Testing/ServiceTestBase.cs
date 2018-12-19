@@ -181,19 +181,28 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void UpdateAutoTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var car = Target.ReadAuto(2);
+            car.Brand = "VW Passat";
+            Target.UpdateAuto(car);
+            Assert.Equal("VW Passat", Target.ReadAuto(2).Brand);
         }
 
         [Fact]
         public void UpdateKundeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var customer = Target.ReadKunde(1);
+            customer.Surname = "Gramm";
+            Target.UpdateKunde(customer);
+            Assert.Equal("Gramm", Target.ReadKunde(1).Surname);
         }
 
         [Fact]
         public void UpdateReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservation = Target.ReadReservation(4);
+            reservation.To = new DateTime(2020, 07, 19);
+            Target.UpdateReservation(reservation);
+            Assert.Equal(new DateTime(2020, 07, 19), Target.ReadReservation(4).To);
         }
 
         #endregion
@@ -271,13 +280,35 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void UpdateReservationWithInvalidDateRangeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservation = Target.ReadReservation(4);
+            reservation.To = new DateTime(2020, 05, 19);
+
+            try
+            {
+                Target.UpdateReservation(reservation);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+
+                Assert.Equal(AutoReservationFault.RentalPeriodNotAllowed, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
         public void UpdateReservationWithAutoNotAvailableTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservation = Target.ReadReservation(1);
+            reservation.Car = Target.ReadAuto(2);
+
+            try
+            {
+                Target.UpdateReservation(reservation);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+
+                Assert.Equal(AutoReservationFault.CarNotAvailable, e.Detail.ErrorCode);
+            }
         }
 
         #endregion
