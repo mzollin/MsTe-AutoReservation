@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
+using AutoReservation.BusinessLayer;
+using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.DataTransferObjects.Faults;
 using AutoReservation.Common.Interfaces;
 using AutoReservation.TestEnvironment;
 using Xunit;
@@ -17,19 +22,22 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetAutosTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var cars = Target.ReadAllAutos().Count();
+            Assert.Equal(4, cars);
         }
 
         [Fact]
         public void GetKundenTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var customers = Target.ReadAllKunden().Count();
+            Assert.Equal(4, customers);
         }
 
         [Fact]
         public void GetReservationenTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservations = Target.ReadAllReservationen().Count();
+            Assert.Equal(4, reservations);
         }
 
         #endregion
@@ -46,13 +54,15 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetKundeByIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var customer = Target.ReadKunde(1);
+            Assert.Equal(1, customer.Id);
         }
 
         [Fact]
         public void GetReservationByNrTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservation = Target.ReadReservation(1);
+            Assert.Equal(1, reservation.ReservationsNr);
         }
 
         #endregion
@@ -62,19 +72,40 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetAutoByIdWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            try
+            {
+                var car = Target.ReadAuto(42);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.RequestedEntityDoesNotExist, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
         public void GetKundeByIdWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            try
+            {
+                var customer = Target.ReadKunde(23);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.RequestedEntityDoesNotExist, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
         public void GetReservationByNrWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            try
+            {
+                var car = Target.ReadReservation(666);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.RequestedEntityDoesNotExist, e.Detail.ErrorCode);
+            }
         }
 
         #endregion
@@ -191,7 +222,24 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void InsertReservationWithAutoNotAvailableTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var car = Target.ReadAuto(2);
+            var customer = Target.ReadKunde(3);
+            var reservation = new ReservationDto
+            {
+                Car = car,
+                Customer = customer,
+                From = new DateTime(2020, 01, 10),
+                To = new DateTime(2020, 01, 20)
+            };
+
+            try
+            {
+                Target.CreateReservation(reservation);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.CarNotAvailable, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
