@@ -212,19 +212,56 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void UpdateAutoWithOptimisticConcurrencyTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var car = Target.ReadAuto(2);
+            car.Brand = "VW Passat";
+            Target.UpdateAuto(car);
+            car.Brand = "VW Passnot";
+
+            try
+            {
+                Target.UpdateAuto(car);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.DataHasBeenModifiedInMeantime, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
         public void UpdateKundeWithOptimisticConcurrencyTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var customer = Target.ReadKunde(1);
+            customer.Surname = "Gramm";
+            Target.UpdateKunde(customer);
+            customer.Surname = "Bolika";
+
+            try
+            {
+                Target.UpdateKunde(customer);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.DataHasBeenModifiedInMeantime, e.Detail.ErrorCode);
+            }
         }
 
         [Fact]
         public void UpdateReservationWithOptimisticConcurrencyTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservation = Target.ReadReservation(4);
+            reservation.To = new DateTime(2020, 07, 19);
+            Target.UpdateReservation(reservation);
+            reservation.To = new DateTime(2020, 08, 19);
+
+
+            try
+            {
+                Target.UpdateReservation(reservation);
+            }
+            catch (FaultException<AutoReservationFault> e)
+            {
+                Assert.Equal(AutoReservationFault.DataHasBeenModifiedInMeantime, e.Detail.ErrorCode);
+            }
         }
 
         #endregion
